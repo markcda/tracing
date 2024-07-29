@@ -158,10 +158,8 @@ pub fn format_trace(record: &log::Record<'_>) -> io::Result<()> {
     Ok(())
 }
 
-// XXX(eliza): this is factored out so that we don't have to deal with the pub
-// function `format_trace`'s `Result` return type...maybe we should get rid of
-// that in 0.2...
-pub(crate) fn dispatch_record(record: &log::Record<'_>) {
+/// Handle a log entry as `tracing` entry
+pub fn dispatch_record(record: &log::Record<'_>) {
     dispatch::get_default(|dispatch| {
         let filter_meta = record.as_trace();
         if !dispatch.enabled(&filter_meta) {
